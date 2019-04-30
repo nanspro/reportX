@@ -1,0 +1,1 @@
+A web app for users to interact with mythx API and generate beautiful HTML reports
