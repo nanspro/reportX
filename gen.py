@@ -44,16 +44,25 @@ def hello():
             print(data)
             API_ENDPOINT = 'https://api.mythx.io/v1/analyses'
             m = requests.post(url = API_ENDPOINT, data = data, headers = header)
-            print(m.error)
         elif uuid:
+            # print(m.error)
             API_ENDPOINT = 'https://api.mythx.io/v1/analyses' + '/' + uuid
             m = requests.get(url = API_ENDPOINT, headers = header)
             print(m)
             # return jsonify(result='Input needed')
         elif uuid_result:
+            report = {}
             API_ENDPOINT = 'https://api.mythx.io/v1/analyses' + '/' + uuid_result + '/' + 'issues'
             m = requests.get(url = API_ENDPOINT, headers = header)
-            print(m)
+            text = m.text
+            text = text.replace("'", '"')
+            text = text.replace("None", '""')
+            r = json.loads(text)
+            print(r)
+            report = generate_report(r[0])
+            return render_template('report.html', source_type = report["source_type"], 
+            source_format = report["source_format"], issues = report["issuess"], n_ins = report['n_ins'], 
+            n_paths = report['n_paths'])
 
     return render_template('index.html')
 
@@ -70,41 +79,32 @@ def hello():
 # print(r)
 # report = {}
 
-# # # Preparing data to be presented
-# report['source_type'] = r["sourceType"]
-# report['source_format'] = r["sourceFormat"]
-# report['source_list'] = r["sourceList"]
+def generate_report(r):
+    report = {}
 
-# #meta
-# if "coveredInstructions" in r["meta"].keys():
-#     report['n_ins']@app.route('/', methods= ["GET", "POST"])
-# def hello():
-#     if request.method == 'POST':
-#         story = request.form.get("bytecode")
-#         if story:
-#             data = {
-#                 "bytecode": story
-#             }
-#             print(data)
-#             API_ENDPOINT = 'https://api.mythx.io/v1/analyses'
-#             m = requests.post(url = API_ENDPOINT, data = data, headers = header)
-#             print(m.error)
-#         else:
-#             return jsonify(result='Input needed')
-#     return render_template('index.html') = r["meta"]["coveredInstructions"]
-# if "coveredPaths" in r["meta"].keys():
-#     report['n_paths'] = r["meta"]["coveredPaths"]
-# if "selectedCompiler" in r["meta"].keys():
-#     report['compiler'] = r["meta"]["selectedCompiler"]
+    # Preparing data to be presented
+    report['source_type'] = r["sourceType"]
+    report['source_format'] = r["sourceFormat"]
 
-# #issues
-# r = r["issues"][0]
-# report['source_map'] = r["locations"][0]["sourceMap"]
-# report['severity'] = r["severity"]
-# report['swc_id'] = r["swcID"]
-# report['swc_title'] = r["swcTitle"]
-# report['summary'] = r["description"]["head"]
-# report['detail'] = r["description"]["tail"]
+    if "coveredInstructions" in r["meta"].keys():
+        report['n_ins'] = r["meta"]["coveredInstructions"]
+    if "coveredPaths" in r["meta"].keys():
+        report['n_paths'] = r["meta"]["coveredPaths"]
+    if "selectedCompiler" in r["meta"].keys():
+        report['compiler'] = r["meta"]["selectedCompiler"]
 
-# output = template.render(h1 = report['source_type'], descr = report['source_format'])
-# print(output)
+    issues = r["issues"]
+    list_issues = [None] * 6
+    for i in range(0,6):
+        list_issues[i] = []
+        
+    for r in issues:
+        list_issues[0].append(r["locations"][0]["sourceMap"])
+        list_issues[1].append(r["severity"])
+        list_issues[2].append(r["swcID"])
+        list_issues[3].append(r["swcTitle"])
+        list_issues[4].append(r["description"]["head"])
+        list_issues[5].append(r["description"]["tail"])
+    
+    report["issuess"] = list_issues
+    return report

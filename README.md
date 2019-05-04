@@ -11,3 +11,6 @@ A web app for users to interact with mythx API and generate beautiful HTML repor
 
 To start the server
 `python3 -m flask run`
+
+## Example Report (Needs Beautification)
+![Image](/static/report.png)

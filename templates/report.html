@@ -1,7 +1,37 @@
-<h1> Hello Jinja2 </h1>
-<h2>It is recommended to make a conscious choice on what version of Solidity is used for compilation. Currently any version equal or greater than "0.5.3" is allowed.</h2>
+<h4> mythx-report: A report generating library for mythx </h4> 
 
-<ul>
-    <li>SWC-103</li>
-    <li>0.5.3</li>
-</ul>
+<h1> Latest Report </h1>
+
+<b>Source Type of data being analyzed: {{ source_type }} </b>
+<b>Source format of data being analyzed: {{ source_format }} </b>
+
+{% for issue in issues %}
+<h2> Issues </h2>
+<h3> {{ issue[3] }} </h3>
+{{ issue[4] }}
+
+{{ issue[5] }}
+
+<b>Issue ID under Smart Contract Weakness Classification and Test Cases: {{issue[2]}}</b>
+
+<b> {{issue[1]}} Severity</b>
+
+<h4> Locations </h4>
+The compiler generates a mapping from the bytecode to the range in the source code that generated the instruction known as source mapping.
+
+For this particular issue the source mapping is <br/>
+<i>{{issue[0]}} </i>
+
+Where {{s}} is the byte-offset to the start of the range in the source file, {{l}} is the length of the source range in bytes and {{f}} is the index in sourceList.
+
+
+[For more Information on source mappings](https://solidity.readthedocs.io/en/v0.5.2/miscellaneous.html#source-mappings)
+
+{% endfor %}
+
+<h2> More Information </h2>
+
+<b>Number of covered instructions are {{ n_ins }}</b>
+
+<b>Number of covered paths are {{ n_paths }}</b>
+
