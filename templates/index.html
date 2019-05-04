@@ -1,0 +1,49 @@
+<html>
+<body>
+<form method = "post" action = "http://127.0.0.1:5000"> 
+    <div>
+      <label for="data">Enter the bytecode for your contract</label>
+      <input type="text" name="bytecode">
+    </div>
+    <div>
+      <input type="submit" value="Send" >
+    </div>
+</form>
+
+<br/>
+<br/>
+<br/>
+
+<form method = "post" action = "http://127.0.0.1:5000"> 
+  <div>
+    <label for="data">Enter the uuid to see the status of your analysis</label>
+    <input type="text" name="uuid">
+  </div>
+  <div>
+    <input type="submit" value="Send" >
+  </div>
+</form>
+
+<br/>
+<br/>
+
+<form method = "post" action = "http://127.0.0.1:5000"> 
+  <div>
+    <label for="data">Enter the finished analysis uuid to see the results</label>
+    <input type="text" name="uuid_result">
+  </div>
+  <div>
+    <input type="submit" value="Report" >
+  </div>
+</form>
+
+</body>
+</html>
+
+<!-- <h1> {{ h1 }} </h1>
+<h2>{{ descr }}</h2>
+
+<!-- <ul>
+    <li>{{ identifier }}</li>
+    <li>{{ compiler }}</li>
+</ul> --> -->
